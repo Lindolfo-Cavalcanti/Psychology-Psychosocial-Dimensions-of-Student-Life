@@ -39,7 +39,7 @@ str(data_student)
 
 The dataset utilized in this report is called "Psychosocial Dimensions of Student Life", available on: https://www.kaggle.com/datasets/mdismielhossenabir/psychosocial-dimensions-of-student-life. The dataset has 10 columns (variables) and 78 observations. These columns and rows describe characteristics of computer science students and aims to identify the depression level in these students.
 
-So, with that in mind, these are the variables and their description according to the creators:
+Below are the variables along with their descriptions as provided by the creators:
 
 ### Age:
 
@@ -83,20 +83,20 @@ Explores individuals' receptiveness to new experiences or concepts, offering ins
 
 ## Objectives
 
-The main objective in this report is to explore the data and try to find any link between the variables and the depression levels in these students.
+The primary objective of this report is to explore the data and identify any potential links between the variables and the depression levels among these students.
 
-Therefore, to accomplish this, a few basic steps are recommended. They are:
-    
+To achieve this objective, the following steps are recommended:
+
   - Data Exploration
-    
-  - Data Cleaning 
-    
-  - Data Analysis 
-    - Normalities Tests
-    - Investigate Possible Correlations
+  
+  - Data Cleaning
+  
+  - Data Analysis
+    - Normality Tests
+    - Investigating Possible Correlations
     - Statistical Tests
-      
-Each stage of this investigation will be explained and discussed. Besides, the thinking process of the analysis will be exposed.
+
+Each stage of this investigation will be explained and discussed in detail. Additionally, the thought process behind the analysis will be thoroughly outlined.
 
 # Data Exploration
 
@@ -121,6 +121,16 @@ ft_discriptive <- set_caption(ft_discriptive, caption = "Variables Characteristi
 ft_discriptive 
 ```
 
+The first step in data exploration is to examine the variables. The table below presents our 10 variables along with their characteristics. The "class" column indicates the type of each variable, which in this case, includes two classes: numeric and factor.
+
+Numeric variables are represented by numbers. In this dataset, the variables Age, SleepPerDayHours, and NumberOfFriends are numeric.
+
+Conversely, factor variables have levels in their classification. For instance, DepressionStatus has three levels: No, Sometimes, and Yes.
+
+Another valuable piece of information in this table is the count of NA values (missing data) in our columns. As shown, only one column, NumberOfFriends, contains NA values.
+
+Although the percentage of NA values in this column is low (only 4%), it is essential to address these missing values to ensure a robust analysis.
+
 ```{r echo=FALSE}
 ft_diagnose = dlookr::diagnose_category(data_student) %>% flextable()
 
@@ -138,6 +148,8 @@ ft_diagnose <- set_caption(ft_diagnose, caption = "Variables Diagnose")
 
 ft_diagnose
 ```
+
+
 
 ```{r echo=FALSE}
 dlookr::plot_bar_category(data_student, DepressionStatus)
