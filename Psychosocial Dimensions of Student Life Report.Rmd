@@ -1,0 +1,428 @@
+---
+title: "Psychosocial Dimensions of Student Life Report"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+author: "Lindolfo Cavalcanti"
+date: "2024/07"
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(dlookr)
+library(flextable)
+library(missRanger)
+library(SmartEDA)
+library(DataExplorer)
+library(report)
+```
+
+```{r include=FALSE}
+data_student = read_csv("/home/lindo/Documents/Kaggle/Psychosocial Dimensions of Student Life/CSE_student_performances.csv")
+```
+
+```{r include=FALSE}
+data_student$Gender = data_student$Gender %>% as.factor()
+data_student$AcademicPerformance = data_student$AcademicPerformance %>% as.factor()
+data_student$TakingNoteInClass = data_student$TakingNoteInClass %>% as.factor()
+data_student$DepressionStatus = data_student$DepressionStatus %>% as.factor()
+data_student$FaceChallangesToCompleteAcademicTask = data_student$FaceChallangesToCompleteAcademicTask %>% as.factor()
+data_student$LikePresentation = data_student$LikePresentation %>% as.factor()
+data_student$LikeNewThings= data_student$LikeNewThings %>% as.factor()
+
+str(data_student)
+```
+
+# Introduction
+
+## Dataset Discription 
+
+The dataset utilized in this report is called "Psychosocial Dimensions of Student Life", available on: https://www.kaggle.com/datasets/mdismielhossenabir/psychosocial-dimensions-of-student-life. The dataset has 10 columns (variables) and 78 observations. These columns and rows describe characteristics of computer science students and aims to identify the depression level in these students.
+
+So, with that in mind, these are the variables and their description according to the creators:
+
+### Age:
+
+Represents the age of the individuals in the dataset, providing insight into the age distribution of the study.
+
+### Gender:
+
+Indicates the gender of each individual, allowing for the exploration of gender-related patterns and trends within the dataset.
+
+### Academic Performance:
+
+Reflects the academic achievements of individuals.
+
+### Taking Note In Class:
+
+Describes about individuals take notes during class, providing insights into study habits and engagement during lectures.
+
+### Depression Status:
+
+Indicates the presence or absence of depressive symptoms, contributing valuable information about the mental health of individuals in the dataset.
+
+### Face Challenges To Complete Academic Task:
+
+Explores whether individuals encounter challenges in completing academic tasks.
+
+### Like Presentation:
+
+Reflects individuals' preferences for presentations, offering insights into their learning style and engagement with visual or oral communication. This aim also measure is they extrovert or introvert.
+
+### Sleep Per Day Hours:
+
+Represents the average hours of sleep individuals get per day, providing information on sleep patterns and potential correlations with academic performance.
+
+### Number Of Friend:
+
+Quantifies the social aspect by indicating the number of friends each individual has, contributing to the understanding of social dynamics within the dataset.
+
+### Like New Things:
+
+Explores individuals' receptiveness to new experiences or concepts, offering insights into their adaptability and openness to innovation.
+
+## Objectives
+
+The main objective in this report is to explore the data and try to find any link between the variables and the depression levels in these students.
+
+Therefore, to accomplish this, a few basic steps are recommended. They are:
+    
+  - Data Exploration
+    
+  - Data Cleaning 
+    
+  - Data Analysis 
+    - Normalities Tests
+    - Investigate Possible Correlations
+    - Statistical Tests
+      
+Each stage of this investigation will be explained and discussed. Besides, the thinking process of the analysis will be exposed.
+
+# Data Exploration
+
+```{r echo=FALSE}
+discriptive1 = ExpData(data=data_student,type=2) %>% as.data.frame() 
+
+ft_discriptive = discriptive1 %>% flextable()
+
+ft_discriptive <- ft_discriptive %>%
+  set_header_labels(Age = "Age (Years)", Variable_Type = "Class", Sample_n = "Sample", Missing_Count = "NA Values", Per_of_Missing = "Percentage of NA", No_of_distinct_values = "Distinct Values") %>% 
+  theme_vanilla() %>%
+  fontsize(size = 10, part = "all") %>%
+  bold(part = "header") %>%
+  color(part = "header", color = "white") %>%
+  bg(part = "header", bg = "#007fff") %>%
+  align(part = "all", align = "center") %>%
+  autofit()
+
+ft_discriptive <- set_caption(ft_discriptive, caption = "Variables Characteristics
+")
+
+ft_discriptive 
+```
+
+```{r echo=FALSE}
+ft_diagnose = dlookr::diagnose_category(data_student) %>% flextable()
+
+ft_diagnose <- ft_diagnose %>%
+  set_header_labels(variables = "Variables", levels = "Levels", N = "Sample", freq = "Frequency", ratio = "Ratio", rank = "Rank") %>% 
+  theme_vanilla() %>%
+  fontsize(size = 10, part = "all") %>%
+  bold(part = "header") %>%
+  color(part = "header", color = "white") %>%
+  bg(part = "header", bg = "#007fff") %>%
+  align(part = "all", align = "center") %>%
+  autofit()
+
+ft_diagnose <- set_caption(ft_diagnose, caption = "Variables Diagnose")
+
+ft_diagnose
+```
+
+```{r echo=FALSE}
+dlookr::plot_bar_category(data_student, DepressionStatus)
+```
+
+# Data Cleaning
+
+## Removing NA values
+
+```{r include=FALSE}
+data_student <- data_student %>%
+  filter(!is.na(NumberOfFriend))
+
+data_student %>% is.na() %>% colSums()
+
+unique(data_student$NumberOfFriend)
+```
+
+## Removing Outliers
+
+```{r echo=FALSE}
+ft_outliers = dlookr::diagnose_outlier(data_student) %>% flextable()
+
+ft_outliers <- ft_outliers %>% 
+  set_header_labels(variables = "Variables", outliers_cnt = "N. Outliers", ouliers_ratio = "outliers Ratio", outliers_mean = "Outliers Mean", with_mean = "With Outliers Mean", without_mean= "Without Outliers Mean", rank = "Rank") %>% 
+  theme_vanilla() %>%
+  fontsize(size = 10, part = "all") %>%
+  bold(part = "header") %>%
+  color(part = "header", color = "white") %>%
+  bg(part = "header", bg = "#007fff") %>%
+  align(part = "all", align = "center") %>%
+  autofit()
+
+ft_outliers = set_caption(ft_outliers, caption = "Outliers Diagnose")
+
+ft_outliers
+```
+
+```{r echo=FALSE}
+dlookr::plot_outlier(data_student, NumberOfFriend)
+```
+
+```{r echo=FALSE}
+outliers_limit = boxplot.stats(data_student$NumberOfFriend)$stats[5]
+
+data_student <- data_student %>%
+  filter(data_student$NumberOfFriend < outliers_limit)
+```
+
+```{r echo=FALSE}
+ggplot(data_student, aes(y = NumberOfFriend)) +
+  geom_boxplot(fill = "#007fff") +
+  labs(title = "Boxplot of Number of Friends",
+       y = "Number of Friends") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 14)
+  )
+```
+
+# Data Analysis
+
+## Normality Tests
+
+```{r echo=FALSE}
+dlookr::plot_normality(data_student)
+```
+
+```{r echo=FALSE}
+ft_normality = dlookr::normality(data_student) %>% flextable()
+
+ft_normality <- ft_normality %>% 
+   set_header_labels(vars = "Variables", statistic = "Statistic", p_value = "P value", sample = "Sample") %>% 
+  theme_vanilla() %>%
+  fontsize(size = 10, part = "all") %>%
+  bold(part = "header") %>%
+  color(part = "header", color = "white") %>%
+  bg(part = "header", bg = "#007fff") %>%
+  align(part = "all", align = "center") %>%
+  autofit()
+
+ft_normality = set_caption(ft_normality, caption = "Normality Test to Numeric Variables")
+
+ft_normality
+```
+
+Shapiro-Wilk Test - Not normally distributed 
+
+```{r echo=FALSE}
+DataExplorer::plot_bar(data_student)
+```
+
+# Depression Status Correlations
+
+```{r echo=FALSE}
+DataExplorer::plot_scatterplot(data_student, by = "DepressionStatus", sampled_rows = nrow(data_student), nrow = 3L, ncol = 3L, parallel = FALSE)
+```
+
+```{r echo=FALSE}
+ft_compare_gender = dlookr::compare_category(data_student, target = "Gender", explain = "DepressionStatus")
+
+ft_compare_gender = ft_compare_gender %>% as.data.frame() %>% flextable()
+
+ft_compare_gender = ft_compare_gender <- ft_compare_gender %>% 
+  set_header_labels(Gender.vs.DepressionStatus.Gender = "Gender", Gender.vs.DepressionStatus.DepressionStatus = "Depression Status", Gender.vs.DepressionStatus.n = "Occurrences", Gender.vs.DepressionStatus.rate = "Rate", Gender.vs.DepressionStatus.var1_rate = "Gender", Gender.vs.DepressionStatus.var2_rate = "Depression Status Rate") %>% 
+  theme_vanilla() %>%
+  fontsize(size = 10, part = "all") %>%
+  bold(part = "header") %>%
+  color(part = "header", color = "white") %>%
+  bg(part = "header", bg = "#007fff") %>%
+  align(part = "all", align = "center") %>%
+  autofit()
+
+ft_compare_gender = set_caption(ft_compare_gender, caption = "Comparation Between Gender and Depression Status")
+
+ft_compare_gender
+```
+
+```{r echo=FALSE}
+ft_compare_challange = dlookr::compare_category(data_student, target = "FaceChallangesToCompleteAcademicTask", explain = "DepressionStatus")
+
+ft_compare_challange = ft_compare_challange %>% as.data.frame() %>% flextable()
+
+ft_compare_challange = ft_compare_challange <- ft_compare_challange %>% 
+  set_header_labels(FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.FaceChallangesToCompleteAcademicTask = "Challanges to Complete Task", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.DepressionStatus = "Depression Status", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.n = "Occorrances", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.rate = "Rate", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.var1_rate = "Challange to Complete Task Rate", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.var2_rate = "Depression Status Rate") %>% 
+  theme_vanilla() %>%
+  fontsize(size = 10, part = "all") %>%
+  bold(part = "header") %>%
+  color(part = "header", color = "white") %>%
+  bg(part = "header", bg = "#007fff") %>%
+  align(part = "all", align = "center") %>%
+  autofit()
+
+ft_compare_challange = set_caption(ft_compare_challange, caption = "Comparation Between Challange to Complete Tasks and Depression Status")
+
+
+ft_compare_challange
+```
+
+```{r echo=FALSE}
+bar_plot_test = DataExplorer::plot_bar(data = data_student, by = "DepressionStatus")
+```
+
+```{r echo=FALSE}
+ggplot(data_student) +
+ aes(x = Gender, fill = DepressionStatus) +
+ geom_bar() +
+ coord_flip() +
+ theme_minimal()+labs(title = "Relationship Between Gender and Depression Status")
+```
+
+```{r echo=FALSE}
+ggplot(data_student) +
+ aes(x = FaceChallangesToCompleteAcademicTask, fill = DepressionStatus) +
+ geom_bar() +
+ coord_flip() +
+ theme_minimal()+labs(title = "Relationship Between Face Challanges to Complete Taks and Depression")
+```
+
+Statistical tests between Depression Status, Gender and Challenge to Complete Tasks
+
+```{r echo=FALSE}
+gender_depression = table(c(data_student$Gender, data_student$DepressionStatus)) 
+
+chi_squared_gender_depression <- chisq.test(gender_depression)
+
+ft_chi_gender = broom::tidy(chi_squared_gender_depression) %>% flextable()
+
+ft_chi_gender = ft_chi_gender %>%
+  set_header_labels(statistic = "X Squared", p.value = "P-Value", parameter = "Degrees of Freedom", method = "Method") %>% 
+  theme_vanilla() %>%
+  fontsize(size = 10, part = "all") %>%
+  bold(part = "header") %>%
+  color(part = "header", color = "white") %>%
+  bg(part = "header", bg = "#007fff") %>%
+  align(part = "all", align = "center") %>%
+  autofit()
+
+ft_chi_gender = set_caption(ft_chi_gender, caption = "Chi-Squared Test for Gender and Depression Status")
+
+ft_chi_gender
+```
+
+
+Effect sizes were labelled following Funder's (2019) recommendations.
+
+The Chi-squared test for given probabilities / goodness of fit of gender_depression to a uniform
+distribution suggests that the effect is statistically significant, and small (chi2 = 16.18, p = 0.003; Fei
+= 0.16, 95% CI [0.07, 1.00])
+
+```{r echo=FALSE}
+challange_depression = table(c(data_student$FaceChallangesToCompleteAcademicTask, data_student$DepressionStatus)) 
+
+chi_squared_challange_depression <- chisq.test(challange_depression)
+
+ft_chi_challange = broom::tidy(chi_squared_challange_depression) %>% flextable()
+
+ft_chi_challange= ft_chi_challange%>%
+  set_header_labels(statistic = "X Squared", p.value = "P-Value", parameter = "Degrees of Freedom", method = "Method") %>% 
+  theme_vanilla() %>%
+  fontsize(size = 10, part = "all") %>%
+  bold(part = "header") %>%
+  color(part = "header", color = "white") %>%
+  bg(part = "header", bg = "#007fff") %>%
+  align(part = "all", align = "center") %>%
+  autofit()
+
+ft_chi_challange= set_caption(ft_chi_challange, caption = "Chi-Squared Test for Challange to Complete Tasks and Depression Status")
+
+ft_chi_challange
+
+```
+
+Effect sizes were labelled following Funder's (2019) recommendations.
+
+The Chi-squared test for given probabilities / goodness of fit of challange_depression to a uniform
+distribution suggests that the effect is statistically not significant, and small (chi2 = 3.58, p = 0.167;
+Fei = 0.11, 95% CI [0.00, 1.00])
+
+=======
+
+chi_squared_challange_depression
+
+# Conclusion
+
+# Contact
+
+Email: [lindolfoj47.lj\@gmail.com](mailto:lindolfoj47.lj@gmail.com){.email}
+
+Linkedin: [www.linkedin.com/in/ lindolfo-cavalcanti](www.linkedin.com/in/ lindolfo-cavalcanti)
+
+GitHub: <https://github.com/Lindolfo-Cavalcanti>
+
+Kaggle: <https://www.kaggle.com/lindolfocavalcanti>
+<<<<<<< HEAD
+
+# References
+
+  - Cui B (2024). _DataExplorer: Automate Data Exploration and Treatment_. R package version
+0.8.3, <https://CRAN.R-project.org/package=DataExplorer>.
+  - Dayanand Ubrangala, R K, Prasad Kondapalli R, Putatunda S (2024). _SmartEDA: Summarize and
+Explore the Data_. R package version 0.3.10, <https://CRAN.R-project.org/package=SmartEDA>.
+  - Gohel D, Skintzos P (2024). _flextable: Functions for Tabular Reporting_. R package
+version 0.9.6, <https://CRAN.R-project.org/package=flextable>.
+  - Grolemund G, Wickham H (2011). “Dates and Times Made Easy with lubridate.” _Journal of
+Statistical Software_, *40*(3), 1-25. <https://www.jstatsoft.org/v40/i03/>.
+  - Makowski D, Lüdecke D, Patil I, Thériault R, Ben-Shachar M, Wiernik B (2023). “Automated
+Results Reporting as a Practical Tool to Improve Reproducibility and Methodological Best
+Practices Adoption.” _CRAN_. <https://easystats.github.io/report/>.
+  - Mayer M (2024). _missRanger: Fast Imputation of Missing Values_. R package version 2.5.0,
+<https://CRAN.R-project.org/package=missRanger>.
+  - Müller K, Wickham H (2023). _tibble: Simple Data Frames_. R package version 3.2.1,
+<https://CRAN.R-project.org/package=tibble>.
+  - R Core Team (2024). _R: A Language and Environment for Statistical Computing_. R
+Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+  - Ryu C (2024). _dlookr: Tools for Data Diagnosis, Exploration, Transformation_. R package
+version 0.6.3, <https://CRAN.R-project.org/package=dlookr>.
+  - Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York.
+ISBN 978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+  - Wickham H (2023). _forcats: Tools for Working with Categorical Variables (Factors)_. R
+package version 1.0.0, <https://CRAN.R-project.org/package=forcats>.
+  - Wickham H (2023). _stringr: Simple, Consistent Wrappers for Common String Operations_. R
+package version 1.5.1, <https://CRAN.R-project.org/package=stringr>.
+  - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A,
+Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D,
+Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). “Welcome to the
+tidyverse.” _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686
+<https://doi.org/10.21105/joss.01686>.
+  - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data
+Manipulation_. R package version 1.1.4, <https://CRAN.R-project.org/package=dplyr>.
+  - Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.2,
+<https://CRAN.R-project.org/package=purrr>.
+  - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package
+version 2.1.5, <https://CRAN.R-project.org/package=readr>.
+  - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Analyses were conducted using the R Statistical language (version 4.4.1; R Core Team, 2024), 
+using the packages DataExplorer (version 0.8.3; Cui B, 2024), SmartEDA
+(version 0.3.10; Dayanand Ubrangala et al., 2024), flextable (version 0.9.6; Gohel D,
+Skintzos P, 2024), lubridate (version 1.9.3; Grolemund G, Wickham H, 2011), report (version
+0.5.9; Makowski D et al., 2023), missRanger (version 2.5.0; Mayer M, 2024), tibble (version
+3.2.1; Müller K, Wickham H, 2023), dlookr (version 0.6.3; Ryu C, 2024), ggplot2 (version
+3.5.1; Wickham H, 2016), forcats (version 1.0.0; Wickham H, 2023), stringr (version 1.5.1;
+Wickham H, 2023), tidyverse (version 2.0.0; Wickham H et al., 2019), dplyr (version 1.1.4;
+Wickham H et al., 2023), purrr (version 1.0.2; Wickham H, Henry L, 2023), readr (version
+2.1.5; Wickham H et al., 2024) and tidyr (version 1.3.1; Wickham H et al., 2024).
