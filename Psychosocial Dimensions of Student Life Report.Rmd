@@ -135,7 +135,7 @@ Although the percentage of NA values in this column is low (only 4%), it is esse
 ft_diagnose = dlookr::diagnose_category(data_student) %>% flextable()
 
 ft_diagnose <- ft_diagnose %>%
-  set_header_labels(variables = "Variables", levels = "Levels", N = "Sample", freq = "Frequency", ratio = "Ratio", rank = "Rank") %>% 
+  set_header_labels(variables = "Variables", levels = "Levels", N = "Sample", freq = "Frequency", ratio = "Percentage", rank = "Rank") %>% 
   theme_vanilla() %>%
   fontsize(size = 10, part = "all") %>%
   bold(part = "header") %>%
@@ -149,11 +149,19 @@ ft_diagnose <- set_caption(ft_diagnose, caption = "Variables Diagnose")
 ft_diagnose
 ```
 
+Going ahead, this new table detail a litlle more the information about categorical (factor) variables. Here we can see all their levels and the frequency and percentage of that levels occurrences. 
 
+As said before, our primary objective is to discover information about the variable DepressionStatus. To do so, let's investigate it a little closer.
+
+DepressionStatus has 3 levels, and 2 of them inform that the students have some symptoms of depression (Yes and Sometimes). The most ansewered levels was Sometimes (~ 44%) and Yes(~ 34%), consecutively.
+
+These results demonstrate that most of the students (79%) have some sympthons of depression.
 
 ```{r echo=FALSE}
 dlookr::plot_bar_category(data_student, DepressionStatus)
 ```
+
+This bar plot demonstrate the difference of the frequency in the levels graphically. obs: the blue line indicates de mean.
 
 # Data Cleaning
 
