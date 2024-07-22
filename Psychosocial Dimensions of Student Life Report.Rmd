@@ -14,6 +14,7 @@ library(flextable)
 library(missRanger)
 library(SmartEDA)
 library(DataExplorer)
+library(report)
 ```
 
 ```{r include=FALSE}
@@ -33,6 +34,8 @@ str(data_student)
 ```
 
 # Introduction
+
+
 
 # Data Exploration
 
@@ -256,6 +259,12 @@ ft_chi_gender = set_caption(ft_chi_gender, caption = "Chi-Squared Test for Gende
 ft_chi_gender
 ```
 
+Effect sizes were labelled following Funder's (2019) recommendations.
+
+The Chi-squared test for given probabilities / goodness of fit of gender_depression to a uniform
+distribution suggests that the effect is statistically significant, and small (chi2 = 16.18, p = 0.003; Fei
+= 0.16, 95% CI [0.07, 1.00])
+
 ```{r echo=FALSE}
 challange_depression = table(c(data_student$FaceChallangesToCompleteAcademicTask, data_student$DepressionStatus)) 
 
@@ -276,9 +285,13 @@ ft_chi_challange= ft_chi_challange%>%
 ft_chi_challange= set_caption(ft_chi_challange, caption = "Chi-Squared Test for Challange to Complete Tasks and Depression Status")
 
 ft_chi_challange
-
-chi_squared_challange_depression
 ```
+
+Effect sizes were labelled following Funder's (2019) recommendations.
+
+The Chi-squared test for given probabilities / goodness of fit of challange_depression to a uniform
+distribution suggests that the effect is statistically not significant, and small (chi2 = 3.58, p = 0.167;
+Fei = 0.11, 95% CI [0.00, 1.00])
 
 # Conclusion
 
@@ -291,3 +304,55 @@ Linkedin: [www.linkedin.com/in/ lindolfo-cavalcanti](www.linkedin.com/in/ lindol
 GitHub: <https://github.com/Lindolfo-Cavalcanti>
 
 Kaggle: <https://www.kaggle.com/lindolfocavalcanti>
+
+# References
+
+  - Cui B (2024). _DataExplorer: Automate Data Exploration and Treatment_. R package version
+0.8.3, <https://CRAN.R-project.org/package=DataExplorer>.
+  - Dayanand Ubrangala, R K, Prasad Kondapalli R, Putatunda S (2024). _SmartEDA: Summarize and
+Explore the Data_. R package version 0.3.10, <https://CRAN.R-project.org/package=SmartEDA>.
+  - Gohel D, Skintzos P (2024). _flextable: Functions for Tabular Reporting_. R package
+version 0.9.6, <https://CRAN.R-project.org/package=flextable>.
+  - Grolemund G, Wickham H (2011). “Dates and Times Made Easy with lubridate.” _Journal of
+Statistical Software_, *40*(3), 1-25. <https://www.jstatsoft.org/v40/i03/>.
+  - Makowski D, Lüdecke D, Patil I, Thériault R, Ben-Shachar M, Wiernik B (2023). “Automated
+Results Reporting as a Practical Tool to Improve Reproducibility and Methodological Best
+Practices Adoption.” _CRAN_. <https://easystats.github.io/report/>.
+  - Mayer M (2024). _missRanger: Fast Imputation of Missing Values_. R package version 2.5.0,
+<https://CRAN.R-project.org/package=missRanger>.
+  - Müller K, Wickham H (2023). _tibble: Simple Data Frames_. R package version 3.2.1,
+<https://CRAN.R-project.org/package=tibble>.
+  - R Core Team (2024). _R: A Language and Environment for Statistical Computing_. R
+Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+  - Ryu C (2024). _dlookr: Tools for Data Diagnosis, Exploration, Transformation_. R package
+version 0.6.3, <https://CRAN.R-project.org/package=dlookr>.
+  - Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York.
+ISBN 978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+  - Wickham H (2023). _forcats: Tools for Working with Categorical Variables (Factors)_. R
+package version 1.0.0, <https://CRAN.R-project.org/package=forcats>.
+  - Wickham H (2023). _stringr: Simple, Consistent Wrappers for Common String Operations_. R
+package version 1.5.1, <https://CRAN.R-project.org/package=stringr>.
+  - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A,
+Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D,
+Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). “Welcome to the
+tidyverse.” _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686
+<https://doi.org/10.21105/joss.01686>.
+  - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data
+Manipulation_. R package version 1.1.4, <https://CRAN.R-project.org/package=dplyr>.
+  - Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.2,
+<https://CRAN.R-project.org/package=purrr>.
+  - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package
+version 2.1.5, <https://CRAN.R-project.org/package=readr>.
+  - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Analyses were conducted using the R Statistical language (version 4.4.1; R Core Team, 2024), 
+using the packages DataExplorer (version 0.8.3; Cui B, 2024), SmartEDA
+(version 0.3.10; Dayanand Ubrangala et al., 2024), flextable (version 0.9.6; Gohel D,
+Skintzos P, 2024), lubridate (version 1.9.3; Grolemund G, Wickham H, 2011), report (version
+0.5.9; Makowski D et al., 2023), missRanger (version 2.5.0; Mayer M, 2024), tibble (version
+3.2.1; Müller K, Wickham H, 2023), dlookr (version 0.6.3; Ryu C, 2024), ggplot2 (version
+3.5.1; Wickham H, 2016), forcats (version 1.0.0; Wickham H, 2023), stringr (version 1.5.1;
+Wickham H, 2023), tidyverse (version 2.0.0; Wickham H et al., 2019), dplyr (version 1.1.4;
+Wickham H et al., 2023), purrr (version 1.0.2; Wickham H, Henry L, 2023), readr (version
+2.1.5; Wickham H et al., 2024) and tidyr (version 1.3.1; Wickham H et al., 2024).
