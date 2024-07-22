@@ -35,7 +35,68 @@ str(data_student)
 
 # Introduction
 
+## Dataset Discription 
 
+The dataset utilized in this report is called "Psychosocial Dimensions of Student Life", available on: https://www.kaggle.com/datasets/mdismielhossenabir/psychosocial-dimensions-of-student-life. The dataset has 10 columns (variables) and 78 observations. These columns and rows describe characteristics of computer science students and aims to identify the depression level in these students.
+
+So, with that in mind, these are the variables and their description according to the creators:
+
+### Age:
+
+Represents the age of the individuals in the dataset, providing insight into the age distribution of the study.
+
+### Gender:
+
+Indicates the gender of each individual, allowing for the exploration of gender-related patterns and trends within the dataset.
+
+### Academic Performance:
+
+Reflects the academic achievements of individuals.
+
+### Taking Note In Class:
+
+Describes about individuals take notes during class, providing insights into study habits and engagement during lectures.
+
+### Depression Status:
+
+Indicates the presence or absence of depressive symptoms, contributing valuable information about the mental health of individuals in the dataset.
+
+### Face Challenges To Complete Academic Task:
+
+Explores whether individuals encounter challenges in completing academic tasks.
+
+### Like Presentation:
+
+Reflects individuals' preferences for presentations, offering insights into their learning style and engagement with visual or oral communication. This aim also measure is they extrovert or introvert.
+
+### Sleep Per Day Hours:
+
+Represents the average hours of sleep individuals get per day, providing information on sleep patterns and potential correlations with academic performance.
+
+### Number Of Friend:
+
+Quantifies the social aspect by indicating the number of friends each individual has, contributing to the understanding of social dynamics within the dataset.
+
+### Like New Things:
+
+Explores individuals' receptiveness to new experiences or concepts, offering insights into their adaptability and openness to innovation.
+
+## Objectives
+
+The main objective in this report is to explore the data and try to find any link between the variables and the depression levels in these students.
+
+Therefore, to accomplish this, a few basic steps are recommended. They are:
+    
+  - Data Exploration
+    
+  - Data Cleaning 
+    
+  - Data Analysis 
+    - Normalities Tests
+    - Investigate Possible Correlations
+    - Statistical Tests
+      
+Each stage of this investigation will be explained and discussed. Besides, the thinking process of the analysis will be exposed.
 
 # Data Exploration
 
@@ -164,11 +225,8 @@ ft_normality = set_caption(ft_normality, caption = "Normality Test to Numeric Va
 ft_normality
 ```
 
-<<<<<<< HEAD
 Shapiro-Wilk Test - Not normally distributed 
 
-=======
->>>>>>> origin/main
 ```{r echo=FALSE}
 DataExplorer::plot_bar(data_student)
 ```
