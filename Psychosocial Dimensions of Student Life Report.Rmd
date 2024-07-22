@@ -193,7 +193,7 @@ Our data is now free of missing values! However, we still need to check for outl
 
 ## Removing Outliers
 
-
+Outliers are some observation that deviate from the normal values. Let's look on our data for these outliers and, if necessary, remove then before continuing our analysis.
 
 ```{r echo=FALSE}
 ft_outliers = dlookr::diagnose_outlier(data_student) %>% flextable()
@@ -213,9 +213,18 @@ ft_outliers = set_caption(ft_outliers, caption = "Outliers Diagnose")
 ft_outliers
 ```
 
+This table shows our numeric variables and if they have any outliers. Gladly, the only variable with outliers is NumberOfFriend (13 observations). Let's take a look specifically on this variable and see graphically the impact of these outliers.
+
 ```{r echo=FALSE}
 dlookr::plot_outlier(data_student, NumberOfFriend)
 ```
+
+These graphs are both great to look the impact of outliers on our data. On the left we have two boxplots, one with outliers, represented by the black dots, and another if we remove them. As you can see, the boxplot without outliers is much better, because it has a better distribution through all data. 
+On the other side, we have the histograms, commomly used to represent the distribution of our data. We also have great diffente on the histogramns with and without outliers. The histogram without outliers is much better because it is more close to a normal distribuition of the data.
+
+With these information we can now see the true effects of outliers on our data and decide what we should do. In this case, we need to get rid of them to have more powerful statistics tests.
+
+Let's do this!
 
 ```{r echo=FALSE}
 outliers_limit = boxplot.stats(data_student$NumberOfFriend)$stats[5]
@@ -223,6 +232,8 @@ outliers_limit = boxplot.stats(data_student$NumberOfFriend)$stats[5]
 data_student <- data_student %>%
   filter(data_student$NumberOfFriend < outliers_limit)
 ```
+
+Removing outliers...
 
 ```{r echo=FALSE}
 ggplot(data_student, aes(y = NumberOfFriend)) +
@@ -235,6 +246,8 @@ ggplot(data_student, aes(y = NumberOfFriend)) +
     axis.title.y = element_text(size = 14)
   )
 ```
+
+Ok, now we removed all outliers from NumberOfFriend. On the boxplot above we can see the present outlier status of the variable and it matches with the one we saw before. Great!
 
 # Data Analysis
 
