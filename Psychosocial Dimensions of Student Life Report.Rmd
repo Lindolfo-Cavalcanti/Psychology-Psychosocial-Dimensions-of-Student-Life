@@ -164,6 +164,8 @@ ft_normality = set_caption(ft_normality, caption = "Normality Test to Numeric Va
 ft_normality
 ```
 
+Shapiro-Wilk Test - Not normally distributed 
+
 ```{r echo=FALSE}
 DataExplorer::plot_bar(data_student)
 ```
