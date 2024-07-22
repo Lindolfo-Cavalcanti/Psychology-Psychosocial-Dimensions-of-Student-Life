@@ -35,9 +35,9 @@ str(data_student)
 
 # Introduction
 
-## Dataset Discription 
+## Dataset Discription
 
-The dataset utilized in this report is called "Psychosocial Dimensions of Student Life", available on: https://www.kaggle.com/datasets/mdismielhossenabir/psychosocial-dimensions-of-student-life. The dataset has 10 columns (variables) and 78 observations. These columns and rows describe characteristics of computer science students and aims to identify the depression level in these students.
+The dataset utilized in this report is called "Psychosocial Dimensions of Student Life", available [here](https://www.kaggle.com/datasets/mdismielhossenabir/psychosocial-dimensions-of-student-life). The dataset has 10 columns (variables) and 78 observations. These columns and rows describe characteristics of computer science students and aims to identify the depression level in these students.
 
 Below are the variables along with their descriptions as provided by the creators:
 
@@ -87,14 +87,15 @@ The primary objective of this report is to explore the data and identify any pot
 
 To achieve this objective, the following steps are recommended:
 
-  - Data Exploration
-  
-  - Data Cleaning
-  
-  - Data Analysis
-    - Normality Tests
-    - Investigating Possible Correlations
-    - Statistical Tests
+-   Data Exploration
+
+-   Data Cleaning
+
+-   Data Analysis
+
+    -   Normality Tests
+    -   Investigating Possible Correlations
+    -   Statistical Tests
 
 Each stage of this investigation will be explained and discussed in detail. Additionally, the thought process behind the analysis will be thoroughly outlined.
 
@@ -149,21 +150,29 @@ ft_diagnose <- set_caption(ft_diagnose, caption = "Variables Diagnose")
 ft_diagnose
 ```
 
-Going ahead, this new table detail a litlle more the information about categorical (factor) variables. Here we can see all their levels and the frequency and percentage of that levels occurrences. 
+Next, the new table provides more detailed information about the categorical (factor) variables. It includes all their levels, along with the frequency and percentage of occurrences for each level.
 
-As said before, our primary objective is to discover information about the variable DepressionStatus. To do so, let's investigate it a little closer.
+As mentioned earlier, our primary objective is to gather insights about the variable DepressionStatus. Therefore, let's examine it more closely.
 
-DepressionStatus has 3 levels, and 2 of them inform that the students have some symptoms of depression (Yes and Sometimes). The most ansewered levels was Sometimes (~ 44%) and Yes(~ 34%), consecutively.
+DepressionStatus has three levels, two of which indicate that students exhibit some symptoms of depression (Yes and Sometimes). The most common response was "Sometimes" (approximately 44%), followed by "Yes" (approximately 34%).
 
-These results demonstrate that most of the students (79%) have some sympthons of depression.
+These results show that the majority of students (79%) exhibit some symptoms of depression.
 
 ```{r echo=FALSE}
 dlookr::plot_bar_category(data_student, DepressionStatus)
 ```
 
-This bar plot demonstrate the difference of the frequency in the levels graphically. obs: the blue line indicates de mean.
+This bar plot graphically demonstrates the frequency differences among the levels of DepressionStatus.
+
+*Note: The blue line represents the mean.*
 
 # Data Cleaning
+
+The first step in cleaning our data is to remove the missing values. Let's proceed with this task.
+
+```{r}
+data_student$NumberOfFriend %>% is.na() %>% sum() # checking our NA values in NumberOfFriend
+```
 
 ## Removing NA values
 
@@ -176,7 +185,15 @@ data_student %>% is.na() %>% colSums()
 unique(data_student$NumberOfFriend)
 ```
 
+```{r}
+data_student$NumberOfFriend %>% is.na() %>% sum() # checking our NA values in NumberOfFriend
+```
+
+Our data is now free of missing values! However, we still need to check for outliers to ensure our data is clean.
+
 ## Removing Outliers
+
+
 
 ```{r echo=FALSE}
 ft_outliers = dlookr::diagnose_outlier(data_student) %>% flextable()
@@ -245,7 +262,7 @@ ft_normality = set_caption(ft_normality, caption = "Normality Test to Numeric Va
 ft_normality
 ```
 
-Shapiro-Wilk Test - Not normally distributed 
+Shapiro-Wilk Test - Not normally distributed
 
 ```{r echo=FALSE}
 DataExplorer::plot_bar(data_student)
@@ -342,12 +359,9 @@ ft_chi_gender = set_caption(ft_chi_gender, caption = "Chi-Squared Test for Gende
 ft_chi_gender
 ```
 
-
 Effect sizes were labelled following Funder's (2019) recommendations.
 
-The Chi-squared test for given probabilities / goodness of fit of gender_depression to a uniform
-distribution suggests that the effect is statistically significant, and small (chi2 = 16.18, p = 0.003; Fei
-= 0.16, 95% CI [0.07, 1.00])
+The Chi-squared test for given probabilities / goodness of fit of gender_depression to a uniform distribution suggests that the effect is statistically significant, and small (chi2 = 16.18, p = 0.003; Fei = 0.16, 95% CI [0.07, 1.00])
 
 ```{r echo=FALSE}
 challange_depression = table(c(data_student$FaceChallangesToCompleteAcademicTask, data_student$DepressionStatus)) 
@@ -374,9 +388,7 @@ ft_chi_challange
 
 Effect sizes were labelled following Funder's (2019) recommendations.
 
-The Chi-squared test for given probabilities / goodness of fit of challenge_depression to a uniform
-distribution suggests that the effect is statistically not significant, and small (chi2 = 3.58, p = 0.167;
-Fei = 0.11, 95% CI [0.00, 1.00])
+The Chi-squared test for given probabilities / goodness of fit of challenge_depression to a uniform distribution suggests that the effect is statistically not significant, and small (chi2 = 3.58, p = 0.167; Fei = 0.11, 95% CI [0.00, 1.00])
 
 # Conclusion
 
@@ -384,61 +396,30 @@ Fei = 0.11, 95% CI [0.00, 1.00])
 
 Email: [lindolfoj47.lj\@gmail.com](mailto:lindolfoj47.lj@gmail.com){.email}
 
-Linkedin: [www.linkedin.com/in/ lindolfo-cavalcanti](www.linkedin.com/in/ lindolfo-cavalcanti)
+Linkedin: [www.linkedin.com/in/ lindolfo-cavalcanti](www.linkedin.com/in/%20lindolfo-cavalcanti)
 
 GitHub: <https://github.com/Lindolfo-Cavalcanti>
 
-Kaggle: <https://www.kaggle.com/lindolfocavalcanti>
-<<<<<<< HEAD
+Kaggle: <https://www.kaggle.com/lindolfocavalcanti> \<\<\<\<\<\<\< HEAD
 
 # References
 
-  - Cui B (2024). _DataExplorer: Automate Data Exploration and Treatment_. R package version
-0.8.3, <https://CRAN.R-project.org/package=DataExplorer>.
-  - Dayanand Ubrangala, R K, Prasad Kondapalli R, Putatunda S (2024). _SmartEDA: Summarize and
-Explore the Data_. R package version 0.3.10, <https://CRAN.R-project.org/package=SmartEDA>.
-  - Gohel D, Skintzos P (2024). _flextable: Functions for Tabular Reporting_. R package
-version 0.9.6, <https://CRAN.R-project.org/package=flextable>.
-  - Grolemund G, Wickham H (2011). “Dates and Times Made Easy with lubridate.” _Journal of
-Statistical Software_, *40*(3), 1-25. <https://www.jstatsoft.org/v40/i03/>.
-  - Makowski D, Lüdecke D, Patil I, Thériault R, Ben-Shachar M, Wiernik B (2023). “Automated
-Results Reporting as a Practical Tool to Improve Reproducibility and Methodological Best
-Practices Adoption.” _CRAN_. <https://easystats.github.io/report/>.
-  - Mayer M (2024). _missRanger: Fast Imputation of Missing Values_. R package version 2.5.0,
-<https://CRAN.R-project.org/package=missRanger>.
-  - Müller K, Wickham H (2023). _tibble: Simple Data Frames_. R package version 3.2.1,
-<https://CRAN.R-project.org/package=tibble>.
-  - R Core Team (2024). _R: A Language and Environment for Statistical Computing_. R
-Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
-  - Ryu C (2024). _dlookr: Tools for Data Diagnosis, Exploration, Transformation_. R package
-version 0.6.3, <https://CRAN.R-project.org/package=dlookr>.
-  - Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York.
-ISBN 978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
-  - Wickham H (2023). _forcats: Tools for Working with Categorical Variables (Factors)_. R
-package version 1.0.0, <https://CRAN.R-project.org/package=forcats>.
-  - Wickham H (2023). _stringr: Simple, Consistent Wrappers for Common String Operations_. R
-package version 1.5.1, <https://CRAN.R-project.org/package=stringr>.
-  - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A,
-Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D,
-Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). “Welcome to the
-tidyverse.” _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686
-<https://doi.org/10.21105/joss.01686>.
-  - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data
-Manipulation_. R package version 1.1.4, <https://CRAN.R-project.org/package=dplyr>.
-  - Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.2,
-<https://CRAN.R-project.org/package=purrr>.
-  - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package
-version 2.1.5, <https://CRAN.R-project.org/package=readr>.
-  - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1,
-<https://CRAN.R-project.org/package=tidyr>.
+-   Cui B (2024). *DataExplorer: Automate Data Exploration and Treatment*. R package version 0.8.3, <https://CRAN.R-project.org/package=DataExplorer>.
+-   Dayanand Ubrangala, R K, Prasad Kondapalli R, Putatunda S (2024). *SmartEDA: Summarize and Explore the Data*. R package version 0.3.10, <https://CRAN.R-project.org/package=SmartEDA>.
+-   Gohel D, Skintzos P (2024). *flextable: Functions for Tabular Reporting*. R package version 0.9.6, <https://CRAN.R-project.org/package=flextable>.
+-   Grolemund G, Wickham H (2011). “Dates and Times Made Easy with lubridate.” *Journal of Statistical Software*, *40*(3), 1-25. <https://www.jstatsoft.org/v40/i03/>.
+-   Makowski D, Lüdecke D, Patil I, Thériault R, Ben-Shachar M, Wiernik B (2023). “Automated Results Reporting as a Practical Tool to Improve Reproducibility and Methodological Best Practices Adoption.” *CRAN*. <https://easystats.github.io/report/>.
+-   Mayer M (2024). *missRanger: Fast Imputation of Missing Values*. R package version 2.5.0, <https://CRAN.R-project.org/package=missRanger>.
+-   Müller K, Wickham H (2023). *tibble: Simple Data Frames*. R package version 3.2.1, <https://CRAN.R-project.org/package=tibble>.
+-   R Core Team (2024). *R: A Language and Environment for Statistical Computing*. R Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+-   Ryu C (2024). *dlookr: Tools for Data Diagnosis, Exploration, Transformation*. R package version 0.6.3, <https://CRAN.R-project.org/package=dlookr>.
+-   Wickham H (2016). *ggplot2: Elegant Graphics for Data Analysis*. Springer-Verlag New York. ISBN 978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+-   Wickham H (2023). *forcats: Tools for Working with Categorical Variables (Factors)*. R package version 1.0.0, <https://CRAN.R-project.org/package=forcats>.
+-   Wickham H (2023). *stringr: Simple, Consistent Wrappers for Common String Operations*. R package version 1.5.1, <https://CRAN.R-project.org/package=stringr>.
+-   Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). “Welcome to the tidyverse.” *Journal of Open Source Software*, *4*(43), 1686. <doi:10.21105/joss.01686> <https://doi.org/10.21105/joss.01686>.
+-   Wickham H, François R, Henry L, Müller K, Vaughan D (2023). *dplyr: A Grammar of Data Manipulation*. R package version 1.1.4, <https://CRAN.R-project.org/package=dplyr>.
+-   Wickham H, Henry L (2023). *purrr: Functional Programming Tools*. R package version 1.0.2, <https://CRAN.R-project.org/package=purrr>.
+-   Wickham H, Hester J, Bryan J (2024). *readr: Read Rectangular Text Data*. R package version 2.1.5, <https://CRAN.R-project.org/package=readr>.
+-   Wickham H, Vaughan D, Girlich M (2024). *tidyr: Tidy Messy Data*. R package version 1.3.1, <https://CRAN.R-project.org/package=tidyr>.
 
-Analyses were conducted using the R Statistical language (version 4.4.1; R Core Team, 2024), 
-using the packages DataExplorer (version 0.8.3; Cui B, 2024), SmartEDA
-(version 0.3.10; Dayanand Ubrangala et al., 2024), flextable (version 0.9.6; Gohel D,
-Skintzos P, 2024), lubridate (version 1.9.3; Grolemund G, Wickham H, 2011), report (version
-0.5.9; Makowski D et al., 2023), missRanger (version 2.5.0; Mayer M, 2024), tibble (version
-3.2.1; Müller K, Wickham H, 2023), dlookr (version 0.6.3; Ryu C, 2024), ggplot2 (version
-3.5.1; Wickham H, 2016), forcats (version 1.0.0; Wickham H, 2023), stringr (version 1.5.1;
-Wickham H, 2023), tidyverse (version 2.0.0; Wickham H et al., 2019), dplyr (version 1.1.4;
-Wickham H et al., 2023), purrr (version 1.0.2; Wickham H, Henry L, 2023), readr (version
-2.1.5; Wickham H et al., 2024) and tidyr (version 1.3.1; Wickham H et al., 2024).
+Analyses were conducted using the R Statistical language (version 4.4.1; R Core Team, 2024), using the packages DataExplorer (version 0.8.3; Cui B, 2024), SmartEDA (version 0.3.10; Dayanand Ubrangala et al., 2024), flextable (version 0.9.6; Gohel D, Skintzos P, 2024), lubridate (version 1.9.3; Grolemund G, Wickham H, 2011), report (version 0.5.9; Makowski D et al., 2023), missRanger (version 2.5.0; Mayer M, 2024), tibble (version 3.2.1; Müller K, Wickham H, 2023), dlookr (version 0.6.3; Ryu C, 2024), ggplot2 (version 3.5.1; Wickham H, 2016), forcats (version 1.0.0; Wickham H, 2023), stringr (version 1.5.1; Wickham H, 2023), tidyverse (version 2.0.0; Wickham H et al., 2019), dplyr (version 1.1.4; Wickham H et al., 2023), purrr (version 1.0.2; Wickham H, Henry L, 2023), readr (version 2.1.5; Wickham H et al., 2024) and tidyr (version 1.3.1; Wickham H et al., 2024).
