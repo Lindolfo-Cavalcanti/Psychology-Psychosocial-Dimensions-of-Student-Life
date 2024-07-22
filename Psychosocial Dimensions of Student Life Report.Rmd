@@ -61,7 +61,7 @@ Describes about individuals take notes during class, providing insights into stu
 
 Indicates the presence or absence of depressive symptoms, contributing valuable information about the mental health of individuals in the dataset.
 
-### Face Challenges To Complete Academic Task:
+### Face challenges To Complete Academic Task:
 
 Explores whether individuals encounter challenges in completing academic tasks.
 
@@ -251,7 +251,7 @@ Shapiro-Wilk Test - Not normally distributed
 DataExplorer::plot_bar(data_student)
 ```
 
-# Depression Status Correlations
+## Depression Status Correlations
 
 ```{r echo=FALSE}
 DataExplorer::plot_scatterplot(data_student, by = "DepressionStatus", sampled_rows = nrow(data_student), nrow = 3L, ncol = 3L, parallel = FALSE)
@@ -283,7 +283,7 @@ ft_compare_challange = dlookr::compare_category(data_student, target = "FaceChal
 ft_compare_challange = ft_compare_challange %>% as.data.frame() %>% flextable()
 
 ft_compare_challange = ft_compare_challange <- ft_compare_challange %>% 
-  set_header_labels(FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.FaceChallangesToCompleteAcademicTask = "Challanges to Complete Task", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.DepressionStatus = "Depression Status", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.n = "Occorrances", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.rate = "Rate", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.var1_rate = "Challange to Complete Task Rate", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.var2_rate = "Depression Status Rate") %>% 
+  set_header_labels(FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.FaceChallangesToCompleteAcademicTask = "Challanges to Complete Task", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.DepressionStatus = "Depression Status", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.n = "Occorrances", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.rate = "Rate", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.var1_rate = "Challenge to Complete Task Rate", FaceChallangesToCompleteAcademicTask.vs.DepressionStatus.var2_rate = "Depression Status Rate") %>% 
   theme_vanilla() %>%
   fontsize(size = 10, part = "all") %>%
   bold(part = "header") %>%
@@ -292,7 +292,7 @@ ft_compare_challange = ft_compare_challange <- ft_compare_challange %>%
   align(part = "all", align = "center") %>%
   autofit()
 
-ft_compare_challange = set_caption(ft_compare_challange, caption = "Comparation Between Challange to Complete Tasks and Depression Status")
+ft_compare_challange = set_caption(ft_compare_challange, caption = "Comparation Between Challenge to Complete Tasks and Depression Status")
 
 
 ft_compare_challange
@@ -315,10 +315,10 @@ ggplot(data_student) +
  aes(x = FaceChallangesToCompleteAcademicTask, fill = DepressionStatus) +
  geom_bar() +
  coord_flip() +
- theme_minimal()+labs(title = "Relationship Between Face Challanges to Complete Taks and Depression")
+ theme_minimal()+labs(title = "Relationship Between Face Challenges to Complete Taks and Depression")
 ```
 
-Statistical tests between Depression Status, Gender and Challenge to Complete Tasks
+## Statistical tests between Depression Status, Gender and challenge to Complete Tasks
 
 ```{r echo=FALSE}
 gender_depression = table(c(data_student$Gender, data_student$DepressionStatus)) 
@@ -366,7 +366,7 @@ ft_chi_challange= ft_chi_challange%>%
   align(part = "all", align = "center") %>%
   autofit()
 
-ft_chi_challange= set_caption(ft_chi_challange, caption = "Chi-Squared Test for Challange to Complete Tasks and Depression Status")
+ft_chi_challange= set_caption(ft_chi_challange, caption = "Chi-Squared Test for challenge to Complete Tasks and Depression Status")
 
 ft_chi_challange
 
@@ -374,13 +374,9 @@ ft_chi_challange
 
 Effect sizes were labelled following Funder's (2019) recommendations.
 
-The Chi-squared test for given probabilities / goodness of fit of challange_depression to a uniform
+The Chi-squared test for given probabilities / goodness of fit of challenge_depression to a uniform
 distribution suggests that the effect is statistically not significant, and small (chi2 = 3.58, p = 0.167;
 Fei = 0.11, 95% CI [0.00, 1.00])
-
-=======
-
-chi_squared_challange_depression
 
 # Conclusion
 
