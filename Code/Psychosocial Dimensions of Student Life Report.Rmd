@@ -295,21 +295,27 @@ These plots graphically display the frequency of all levels in all variables. We
 
 ## Depression Status Correlations
 
-Now that we checked the normality of our data and know it better, we can start look for associations between Depression Status and the other variables.
+Now that we have checked the normality of our data and gained a better understanding of it, we can begin exploring associations between Depression Status and the other variables.
 
-A famous way to this is the scatterplot. This kind of plot show associassion between variables. With that in mind, let's take a look on the scatterplots.
+A common method for examining such associations is through scatterplots. Scatterplots visually display the relationship between two variables. With this in mind, let's examine the scatterplots to explore these associations.
 
 ```{r echo=FALSE}
 DataExplorer::plot_scatterplot(data_student, by = "DepressionStatus", sampled_rows = nrow(data_student_without), nrow = 3L, ncol = 3L, parallel = FALSE)
 ```
 
-Our data is not really big (75 observations). This condition is not a good characteristics to the scatter plots. Besides, categorical variables are not the ideal class of data to work with this kind of plot.
+Our dataset is relatively small, with only 75 observations. This size is not ideal for scatterplots, which may not effectively capture relationships due to limited data. Additionally, scatterplots are less suitable for categorical variables.
 
-Because of this, we should use other techniques to search for associations between the variables.
+Given these limitations, we should consider alternative techniques for investigating associations between the variables.
 
 ```{r echo=FALSE}
 bar_plot_test = DataExplorer::plot_bar(data = data_student, by = "DepressionStatus")
 ```
+
+This chartplot is highly useful for examining the percentage of Depression Status levels across other categorical variables.
+
+From this analysis, we can identify that Depression Status shows a significant relationship with four variables: Gender, Academic Performance, Challenge to Complete Tasks, and Like New Things.
+
+At this stage, we will focus on exploring these relationships more closely. However, we will exclude Like New Things from further analysis due to the low number of students who answered "No." Nevertheless, it is important to note that demotivation towards new experiences is a relevant trait in depression research and warrants future investigation.
 
 ```{r echo=FALSE}
 ggplot(data_student) +
@@ -319,13 +325,17 @@ ggplot(data_student) +
  theme_minimal()+labs(title = "Relationship Between Gender and Depression Status")
 ```
 
+The bar plot illustrating the relationship between Gender and Depression Status reveals that a significant portion of the female sample reported "Yes" to symptoms of depression (approximately 60%). This finding is quite revealing and warrants further investigation to confirm and better understand this relationship.
+
 ```{r echo=FALSE}
 ggplot(data_student) +
  aes(x = FaceChallangesToCompleteAcademicTask, fill = DepressionStatus) +
  geom_bar() +
  coord_flip() +
- theme_minimal()+labs(title = "Relationship Between Face Challenges to Complete Taks and Depression")
+ theme_minimal()+labs(title = "Relationship Between Face Challenges to Complete Tasks and Depression")
 ```
+
+On the other hand, the bar plot of Challenge to Complete Tasks shows that students who experience difficulties with academic tests report approximately 90% of "Yes" or "Sometimes" regarding depression symptoms. This finding is consistent with the understanding that students with depression often struggle with daily tasks and academic challenges.
 
 ```{r echo=FALSE}
 ggplot(data_student) +
@@ -334,6 +344,8 @@ ggplot(data_student) +
  coord_flip() +
  theme_minimal()+labs(title = "Relationship Between Acedemic Performance and Depression Status")
 ```
+
+
 
 ```{r echo=FALSE}
 ft_compare_gender = dlookr::compare_category(data_student, target = "Gender", explain = "DepressionStatus")
@@ -489,7 +501,7 @@ Linkedin: [www.linkedin.com/in/ lindolfo-cavalcanti](www.linkedin.com/in/%20lind
 
 GitHub: <https://github.com/Lindolfo-Cavalcanti>
 
-Kaggle: <https://www.kaggle.com/lindolfocavalcanti> \<\<\<\<\<\<\< HEAD
+Kaggle: <https://www.kaggle.com/lindolfocavalcanti> 
 
 # References
 
