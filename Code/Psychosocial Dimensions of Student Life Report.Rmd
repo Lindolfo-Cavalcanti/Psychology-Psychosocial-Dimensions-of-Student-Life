@@ -18,7 +18,7 @@ library(report)
 ```
 
 ```{r include=FALSE}
-data_student = read_csv("/home/lindo/Documents/Kaggle/Psychosocial Dimensions of Student Life/CSE_student_performances.csv")
+data_student = read_csv("/home/lindo/Documents/Kaggle/Psychosocial Dimensions of Student Life/Data/CSE_student_performances.csv")
 ```
 
 ```{r include=FALSE}
@@ -264,7 +264,7 @@ With that explained, let's take a look at the plots.
 dlookr::plot_normality(data_student_without)
 ```
 
-Analysing these plots we can suspect that our data is non-parametric (not normally distributed)
+Analyzing these plots, we can suspect that our numeric variables are non-parametric (not normally distributed). However, to confirm this and ensure we use the appropriate tests, we must perform the Shapiro-Wilk Test of Normality.
 
 ```{r echo=FALSE}
 ft_normality = dlookr::normality(data_student_without) %>% flextable()
@@ -284,11 +284,15 @@ ft_normality = set_caption(ft_normality, caption = "Normality Test to Numeric Va
 ft_normality
 ```
 
-Shapiro-Wilk Test - Not normally distributed
+With these results, we can confirm that our data is not normally distributed. The p-value for all variables is less than 0.05, which means we should reject the null hypothesis (that the data is normally distributed).
+
+Now, to have a more deep knowledge of our data, we should take a look on our categorical variables.
 
 ```{r echo=FALSE}
 DataExplorer::plot_bar(data_student_without)
 ```
+
+These plots graphically display the frequency of all levels in all variables. We can observe that some variables, such as Gender and Challenge to Complete Tasks, have more balanced results, while other variables show a clear preference for certain levels among the students.
 
 ## Depression Status Correlations
 
