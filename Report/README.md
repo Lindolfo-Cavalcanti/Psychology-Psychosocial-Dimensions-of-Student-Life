@@ -1,7 +1,3 @@
-
-### 4. README for the Report Directory
-
-```markdown
 # Report Directory
 
 ## Overview
