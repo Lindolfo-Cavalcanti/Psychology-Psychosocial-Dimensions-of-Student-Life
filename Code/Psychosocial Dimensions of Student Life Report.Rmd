@@ -392,7 +392,7 @@ ft_compare_challange = set_caption(ft_compare_challange, caption = "Comparation 
 ft_compare_challange
 ```
 
-```{r}
+```{r echo=FALSE}
 ft_compare_academic  = dlookr::compare_category(data_student, target = "AcademicPerformance", explain = "DepressionStatus")
 
 ft_compare_academic  = ft_compare_academic  %>% as.data.frame() %>% flextable()
@@ -415,7 +415,9 @@ ft_compare_academic
 
 ## Statistical tests between Depression Status, Gender and Challenge to Complete Tasks
 
+When looking for associations between categorical variables, the Chi-Squared Test is very reliable. The Chi-Squared Test compares the observed frequencies in each category of a contingency table with the frequencies we would expect if there were no association between the variables.
 
+With that established, let's see the results of the Chi-Squared Test for our variables.
 
 ```{r echo=FALSE}
 gender_depression = table(c(data_student$Gender, data_student$DepressionStatus)) 
@@ -439,9 +441,13 @@ ft_chi_gender = set_caption(ft_chi_gender, caption = "Chi-Squared Test for Gende
 ft_chi_gender
 ```
 
-Effect sizes were labelled following Funder's (2019) recommendations.
+*Effect sizes were labelled following Funder's (2019) recommendations.*
 
-The Chi-squared test for given probabilities / goodness of fit of gender_depression to a uniform distribution suggests that the effect is statistically significant, and small (chi2 = 16.18, p = 0.003; Fei = 0.16, 95% CI [0.07, 1.00])
+*The Chi-squared test for given probabilities / goodness of fit of gender_depression to a uniform distribution suggests that the effect is statistically significant, and small (chi2 = 16.18, p = 0.003; Fei = 0.16, 95% CI [0.07, 1.00])*
+
+The results indicate that there is a statistically significant association between Gender and Depression Status, although the strength of this relationship is small. This finding is useful for understanding how different genders may be differently susceptible to depression and negative feelings. Specifically, it suggests that gender plays a role in the prevalence of depression symptoms, with female possibly experiencing higher levels of depression.
+
+This information is valuable for developing targeted mental health interventions and support strategies that take gender differences into account, ensuring that all students receive the appropriate care and resources they need.
 
 ```{r echo=FALSE}
 challange_depression = table(c(data_student$FaceChallangesToCompleteAcademicTask, data_student$DepressionStatus)) 
@@ -466,9 +472,13 @@ ft_chi_challange
 
 ```
 
-Effect sizes were labelled following Funder's (2019) recommendations.
+*Effect sizes were labelled following Funder's (2019) recommendations.*
 
-The Chi-squared test for given probabilities / goodness of fit of challenge_depression to a uniform distribution suggests that the effect is statistically not significant, and small (chi2 = 3.58, p = 0.167; Fei = 0.11, 95% CI [0.00, 1.00])
+*The Chi-squared test for given probabilities / goodness of fit of challenge_depression to a uniform distribution suggests that the effect is statistically not significant, and small (chi2 = 3.58, p = 0.167; Fei = 0.11, 95% CI [0.00, 1.00])*
+
+The results indicate that there is no significant association between Challenge to Complete Academic Tests and Depression Status, with a small effect size. This suggests that difficulties in completing academic tests are not strongly linked to the presence of depression symptoms in this sample. While academic challenges can be stressful, they do not appear to be a major contributing factor to depression in this group of students.
+
+This finding is important as it helps narrow down the focus to other variables that might have a more substantial impact on depression among students, allowing for more targeted interventions and support strategies.
 
 ```{r echo=FALSE}
 academic_depression = table(c(data_student$AcademicPerformance, data_student$DepressionStatus)) 
@@ -493,9 +503,13 @@ ft_chi_academic
 
 ```
 
-Effect sizes were labelled following Funder's (2019) recommendations.
+*Effect sizes were labelled following Funder's (2019) recommendations.*
 
-The Chi-squared test for given probabilities / goodness of fit of academic_depression to a uniform distribution suggests that the effect is statistically significant, and medium (chi2 = 55.22, p < .001; Fei = 0.22, 95% CI [0.16, 1.00])
+*The Chi-squared test for given probabilities / goodness of fit of academic_depression to a uniform distribution suggests that the effect is statistically significant, and medium (chi2 = 55.22, p < .001; Fei = 0.22, 95% CI [0.16, 1.00])*
+
+The variable Academic Performance shows a statistically significant association with Depression Status, with a medium effect size. This indicates a stronger relationship between academic performance and depression symptoms compared to other variables. This information is valuable as it highlights how academic challenges and performance can significantly impact the mental health of students, suggesting that those who experiencing depression symptoms may be more prone to struggle academically.
+
+By understanding this relationship, we can better address and support students facing academic difficulties to potentially alleviate their mental health struggles.
 
 # Conclusion
 
