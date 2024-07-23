@@ -345,7 +345,11 @@ ggplot(data_student) +
  theme_minimal()+labs(title = "Relationship Between Acedemic Performance and Depression Status")
 ```
 
+An interesting observation from this plot is that all students who reported below-average academic performance also presented depression symptoms. This aligns with the understanding that individuals with depression often struggle to accomplish daily tasks and obligations.
 
+Having visually examined these relationships, let's now take a detailed look at the numbers behind each association.
+
+The following tables represent the occurrences and percentages of each association between the levels of the variables:
 
 ```{r echo=FALSE}
 ft_compare_gender = dlookr::compare_category(data_student, target = "Gender", explain = "DepressionStatus")
@@ -410,6 +414,8 @@ ft_compare_academic
 
 
 ## Statistical tests between Depression Status, Gender and Challenge to Complete Tasks
+
+
 
 ```{r echo=FALSE}
 gender_depression = table(c(data_student$Gender, data_student$DepressionStatus)) 
