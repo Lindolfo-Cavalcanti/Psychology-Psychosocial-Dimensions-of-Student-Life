@@ -92,7 +92,6 @@ To achieve this objective, the following steps are recommended:
 -   Data Cleaning
 
 -   Data Analysis
-
     -   Normality Tests
     -   Investigating Possible Correlations
     -   Statistical Tests
@@ -296,8 +295,44 @@ These plots graphically display the frequency of all levels in all variables. We
 
 ## Depression Status Correlations
 
+Now that we checked the normality of our data and know it better, we can start look for associations between Depression Status and the other variables.
+
+A famous way to this is the scatterplot. This kind of plot show associassion between variables. With that in mind, let's take a look on the scatterplots.
+
 ```{r echo=FALSE}
 DataExplorer::plot_scatterplot(data_student, by = "DepressionStatus", sampled_rows = nrow(data_student_without), nrow = 3L, ncol = 3L, parallel = FALSE)
+```
+
+Our data is not really big (75 observations). This condition is not a good characteristics to the scatter plots. Besides, categorical variables are not the ideal class of data to work with this kind of plot.
+
+Because of this, we should use other techniques to search for associations between the variables.
+
+```{r echo=FALSE}
+bar_plot_test = DataExplorer::plot_bar(data = data_student, by = "DepressionStatus")
+```
+
+```{r echo=FALSE}
+ggplot(data_student) +
+ aes(x = Gender, fill = DepressionStatus) +
+ geom_bar() +
+ coord_flip() +
+ theme_minimal()+labs(title = "Relationship Between Gender and Depression Status")
+```
+
+```{r echo=FALSE}
+ggplot(data_student) +
+ aes(x = FaceChallangesToCompleteAcademicTask, fill = DepressionStatus) +
+ geom_bar() +
+ coord_flip() +
+ theme_minimal()+labs(title = "Relationship Between Face Challenges to Complete Taks and Depression")
+```
+
+```{r echo=FALSE}
+ggplot(data_student) +
+ aes(x = AcademicPerformance, fill = DepressionStatus) +
+ geom_bar() +
+ coord_flip() +
+ theme_minimal()+labs(title = "Relationship Between Acedemic Performance and Depression Status")
 ```
 
 ```{r echo=FALSE}
@@ -341,27 +376,28 @@ ft_compare_challange = set_caption(ft_compare_challange, caption = "Comparation 
 ft_compare_challange
 ```
 
-```{r echo=FALSE}
-bar_plot_test = DataExplorer::plot_bar(data = data_student, by = "DepressionStatus")
+```{r}
+ft_compare_academic  = dlookr::compare_category(data_student, target = "AcademicPerformance", explain = "DepressionStatus")
+
+ft_compare_academic  = ft_compare_academic  %>% as.data.frame() %>% flextable()
+
+ft_compare_academic = ft_compare_academic  <- ft_compare_academic %>% 
+  set_header_labels(AcademicPerformance.vs.DepressionStatus.AcademicPerformance = "Academic Performance", AcademicPerformance.vs.DepressionStatus.DepressionStatus = "Depression Status", AcademicPerformance.vs.DepressionStatus.n = "Occurrences", AcademicPerformance.vs.DepressionStatus.rate = "Rate", AcademicPerformance.vs.DepressionStatus.var1_rate = "Academic Performance", AcademicPerformance.vs.DepressionStatus.var2_rate = "Depression Status Rate") %>% 
+  theme_vanilla() %>%
+  fontsize(size = 10, part = "all") %>%
+  bold(part = "header") %>%
+  color(part = "header", color = "white") %>%
+  bg(part = "header", bg = "#007fff") %>%
+  align(part = "all", align = "center") %>%
+  autofit()
+
+ft_compare_academic  = set_caption(ft_compare_academic , caption = "Comparation Between Academic Performance and Depression Status")
+
+ft_compare_academic 
 ```
 
-```{r echo=FALSE}
-ggplot(data_student) +
- aes(x = Gender, fill = DepressionStatus) +
- geom_bar() +
- coord_flip() +
- theme_minimal()+labs(title = "Relationship Between Gender and Depression Status")
-```
 
-```{r echo=FALSE}
-ggplot(data_student) +
- aes(x = FaceChallangesToCompleteAcademicTask, fill = DepressionStatus) +
- geom_bar() +
- coord_flip() +
- theme_minimal()+labs(title = "Relationship Between Face Challenges to Complete Taks and Depression")
-```
-
-## Statistical tests between Depression Status, Gender and challenge to Complete Tasks
+## Statistical tests between Depression Status, Gender and Challenge to Complete Tasks
 
 ```{r echo=FALSE}
 gender_depression = table(c(data_student$Gender, data_student$DepressionStatus)) 
@@ -415,6 +451,33 @@ ft_chi_challange
 Effect sizes were labelled following Funder's (2019) recommendations.
 
 The Chi-squared test for given probabilities / goodness of fit of challenge_depression to a uniform distribution suggests that the effect is statistically not significant, and small (chi2 = 3.58, p = 0.167; Fei = 0.11, 95% CI [0.00, 1.00])
+
+```{r echo=FALSE}
+academic_depression = table(c(data_student$AcademicPerformance, data_student$DepressionStatus)) 
+
+chi_squared_academic_depression <- chisq.test(academic_depression)
+
+ft_chi_academic = broom::tidy(chi_squared_academic_depression) %>% flextable()
+
+ft_chi_academic = ft_chi_academic %>%
+  set_header_labels(statistic = "X Squared", p.value = "P-Value", parameter = "Degrees of Freedom", method = "Method") %>% 
+  theme_vanilla() %>%
+  fontsize(size = 10, part = "all") %>%
+  bold(part = "header") %>%
+  color(part = "header", color = "white") %>%
+  bg(part = "header", bg = "#007fff") %>%
+  align(part = "all", align = "center") %>%
+  autofit()
+
+ft_chi_academic= set_caption(ft_chi_academic, caption = "Chi-Squared Test for challenge to Complete Tasks and Depression Status")
+
+ft_chi_academic
+
+```
+
+Effect sizes were labelled following Funder's (2019) recommendations.
+
+The Chi-squared test for given probabilities / goodness of fit of academic_depression to a uniform distribution suggests that the effect is statistically significant, and medium (chi2 = 55.22, p < .001; Fei = 0.22, 95% CI [0.16, 1.00])
 
 # Conclusion
 
