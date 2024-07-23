@@ -1,7 +1,3 @@
-
-### 3. README for the Data Directory
-
-```markdown
 # Data Directory
 
 ## Overview
