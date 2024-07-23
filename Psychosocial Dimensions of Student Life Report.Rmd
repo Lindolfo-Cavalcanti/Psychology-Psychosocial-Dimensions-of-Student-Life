@@ -193,7 +193,7 @@ Our data is now free of missing values! However, we still need to check for outl
 
 ## Removing Outliers
 
-Outliers are some observation that deviate from the normal values. Let's look on our data for these outliers and, if necessary, remove then before continuing our analysis.
+Outliers are observations that deviate significantly from the normal values. Let's examine our data for these outliers and, if necessary, remove them before continuing our analysis.
 
 ```{r echo=FALSE}
 ft_outliers = dlookr::diagnose_outlier(data_student) %>% flextable()
@@ -213,30 +213,31 @@ ft_outliers = set_caption(ft_outliers, caption = "Outliers Diagnose")
 ft_outliers
 ```
 
-This table shows our numeric variables and if they have any outliers. Gladly, the only variable with outliers is NumberOfFriend (13 observations). Let's take a look specifically on this variable and see graphically the impact of these outliers.
+This table displays our numeric variables and indicates whether they have any outliers. Fortunately, the only variable with outliers is NumberOfFriends (13 observations). Let's take a closer look at this variable and graphically examine the impact of these outliers.
 
 ```{r echo=FALSE}
 dlookr::plot_outlier(data_student, NumberOfFriend)
 ```
 
-These graphs are both great to look the impact of outliers on our data. On the left we have two boxplots, one with outliers, represented by the black dots, and another if we remove them. As you can see, the boxplot without outliers is much better, because it has a better distribution through all data. 
-On the other side, we have the histograms, commomly used to represent the distribution of our data. We also have great diffente on the histogramns with and without outliers. The histogram without outliers is much better because it is more close to a normal distribuition of the data.
+These graphs are excellent for visualizing the impact of outliers on our data. On the left, we have two boxplots: one with outliers (represented by black dots) and one without. As you can see, the boxplot without outliers shows a much better distribution of the data.
 
-With these information we can now see the true effects of outliers on our data and decide what we should do. In this case, we need to get rid of them to have more powerful statistics tests.
+On the right, we have histograms, which are commonly used to represent data distribution. There is also a significant difference between the histograms with and without outliers. The histogram without outliers is much better because it more closely resembles a normal distribution.
 
-Let's do this!
+With this information, we can clearly see the effects of outliers on our data and make an informed decision. In this case, removing the outliers will lead to more reliable statistical tests.
+
+Let's proceed with removing the outliers.
 
 ```{r echo=FALSE}
 outliers_limit = boxplot.stats(data_student$NumberOfFriend)$stats[5]
 
-data_student <- data_student %>%
+data_student_without <- data_student %>%
   filter(data_student$NumberOfFriend < outliers_limit)
 ```
 
 Removing outliers...
 
 ```{r echo=FALSE}
-ggplot(data_student, aes(y = NumberOfFriend)) +
+ggplot(data_student_without, aes(y = NumberOfFriend)) +
   geom_boxplot(fill = "#007fff") +
   labs(title = "Boxplot of Number of Friends",
        y = "Number of Friends") +
@@ -247,18 +248,26 @@ ggplot(data_student, aes(y = NumberOfFriend)) +
   )
 ```
 
-Ok, now we removed all outliers from NumberOfFriend. On the boxplot above we can see the present outlier status of the variable and it matches with the one we saw before. Great!
+We have now removed all outliers from NumberOfFriends. The updated boxplot above shows the current status of the variable, which matches the improved distribution we observed earlier. Great!
 
-# Data Analysis
+# Statistical Data Analysis
+
+With our data clean, we can properly begin our statistical data analysis. The first test we will perform is the normality tests. These tests are useful for determining if our variables are normally distributed, which will influence the type of tests we can conduct.
+
+We will first investigate the numeric variables using histogram tests (with and without transformation) and QQ plots. In the QQ plots, the blue dots represent the observations, and the black line represents what the observations would look like if they were normally distributed.
+
+With that explained, let's take a look at the plots.
 
 ## Normality Tests
 
 ```{r echo=FALSE}
-dlookr::plot_normality(data_student)
+dlookr::plot_normality(data_student_without)
 ```
 
+Analysing these plots we can suspect that our data is non-parametric (not normally distributed)
+
 ```{r echo=FALSE}
-ft_normality = dlookr::normality(data_student) %>% flextable()
+ft_normality = dlookr::normality(data_student_without) %>% flextable()
 
 ft_normality <- ft_normality %>% 
    set_header_labels(vars = "Variables", statistic = "Statistic", p_value = "P value", sample = "Sample") %>% 
@@ -278,13 +287,13 @@ ft_normality
 Shapiro-Wilk Test - Not normally distributed
 
 ```{r echo=FALSE}
-DataExplorer::plot_bar(data_student)
+DataExplorer::plot_bar(data_student_without)
 ```
 
 ## Depression Status Correlations
 
 ```{r echo=FALSE}
-DataExplorer::plot_scatterplot(data_student, by = "DepressionStatus", sampled_rows = nrow(data_student), nrow = 3L, ncol = 3L, parallel = FALSE)
+DataExplorer::plot_scatterplot(data_student, by = "DepressionStatus", sampled_rows = nrow(data_student_without), nrow = 3L, ncol = 3L, parallel = FALSE)
 ```
 
 ```{r echo=FALSE}
